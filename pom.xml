@@ -2,7 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.project.fundamentals</groupId>
   <artifactId>fundamentals2</artifactId>
+	<packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
+	
   <name>fundamentals2</name>
   
   

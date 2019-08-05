@@ -2,8 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.project.fundamentals</groupId>
   <artifactId>fundamentals2</artifactId>
+<<<<<<< HEAD
 <packaging>war</packaging>
+=======
+	<packaging>war</packaging>
+>>>>>>> bdf23c5b7e1b545f19828e280bfec2a24bab66d8
   <version>0.0.1-SNAPSHOT</version>
+	
   <name>fundamentals2</name>
   
   
@@ -49,6 +54,14 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <version>2.0.5.RELEASE</version>
+</dependency>
+
 		
 		
 		<dependency>
@@ -144,8 +157,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+<<<<<<< HEAD
 <version>2.0.5.RELEASE</version>			
 </plugin>
+=======
+				<version>2.0.5.RELEASE</version>
+			</plugin>
+>>>>>>> bdf23c5b7e1b545f19828e280bfec2a24bab66d8
 		</plugins>
 	</build>
   

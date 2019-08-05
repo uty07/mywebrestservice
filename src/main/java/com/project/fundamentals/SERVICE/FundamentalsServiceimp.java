@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.fundamentals.ENTITY.CardGroupDetails;
+import com.project.fundamentals.ENTITY.ServiceTypeTable;
 import com.project.fundamentals.ENTITY.Fundamentalssetvouchercard;
+import com.project.fundamentals.ENTITY.States;
 import com.project.fundamentals.ENTITY.viewvouchercardgroup;
 import com.project.fundamentals.REPOSITORY.*;
-import com.project.fundamentals.REPOSITORY.RepoCardGroupDetails;
 
 
 
@@ -27,6 +28,12 @@ public class FundamentalsServiceimp implements FundamentalsService{
 	private FundamentalsRepo fundamentalsRepo;
 	
 	RepoCardGroupDetails repocardgroupdetails;
+	
+	
+	@Autowired
+	FindamentalsCountries fundamentalscountries;
+	@Autowired
+	Fundamentalstates fundamentalstates;
 	
 	@Autowired
 	public FundamentalsServiceimp(FundamentalsRepo fundamentalsRepo, RepoCardGroupDetails repocardgroupdetails)
@@ -55,8 +62,8 @@ public class FundamentalsServiceimp implements FundamentalsService{
 
 	
 	
-	public void updateFundamentalssetvouchercardbyid(int card_group_set_id,Fundamentalssetvouchercard fundamentalsupdatevouchercard) {
-		
+	public boolean updateFundamentalssetvouchercardbyid(int card_group_set_id,Fundamentalssetvouchercard fundamentalsupdatevouchercard) {
+
 		   Optional<Fundamentalssetvouchercard> update=fundamentalsRepo.findById( card_group_set_id);
 			LocalDate localDate=LocalDate.now();
 			   @SuppressWarnings("deprecation")
@@ -66,11 +73,23 @@ public class FundamentalsServiceimp implements FundamentalsService{
 		
 	if(update!=null )
 		     {
-		if(fundamentalsupdatevouchercard.getIsDefault().equals("Y") && fundamentalsRepo.findByCardGroupSetId(card_group_set_id).getIsDefault().equals("Y")) {}
-		else{
-		    	 fundamentalsupdatevouchercard.setCardGroupSetId(card_group_set_id);
-		    	 fundamentalsRepo.save(fundamentalsupdatevouchercard);
-		}}    
+		
+		if(fundamentalsupdatevouchercard.getLanguage1Message() ==null ||fundamentalsupdatevouchercard.getLanguage2Mmessage() ==null ) return false;
+		   if(update.get().getIsDefault()!=null)
+			if(update.get().getIsDefault().equals("Y") && fundamentalsupdatevouchercard.getIsDefault().equals("Y"))  return false;
+			
+			fundamentalsupdatevouchercard.setCardGroupSetId(card_group_set_id);
+			fundamentalsupdatevouchercard.setCreatedOn(update.get().getCreatedOn());
+			fundamentalsupdatevouchercard.setCreatedBy(update.get().getCreatedBy());
+			fundamentalsupdatevouchercard.setModifiedOn(date);
+				fundamentalsRepo.save(fundamentalsupdatevouchercard);
+		return true;	
+		
+		
+		
+		}    
+	return false;
+	
 	}
 
 
@@ -100,17 +119,26 @@ public class FundamentalsServiceimp implements FundamentalsService{
 
 	public boolean updateByCardName(String name, Fundamentalssetvouchercard fundamentalssetvouchercard) {
 		
+		System.out.print(fundamentalsRepo.findByCardGroupSetName(name));
+		
 		if(fundamentalsRepo.findByCardGroupSetName(name)!=null)
-		{	Fundamentalssetvouchercard fundamentalssetvouchercard2 = fundamentalsRepo.findByCardGroupSetName(name);
-	int i=0;
-	LocalDate localDate=LocalDate.now();
+		{	
+			//System.out.print("inside the if");
+			Fundamentalssetvouchercard fundamentalssetvouchercard2 = fundamentalsRepo.findByCardGroupSetName(name);
+	        int i=0;
+	        LocalDate localDate=LocalDate.now();
+	        
 	   @SuppressWarnings("deprecation")
 	   Date date=new Date(localDate.getYear()-1900, localDate.getMonthValue(), localDate.getDayOfMonth());
+	   
 	   i=fundamentalssetvouchercard2.getCardGroupSetId();
+	   
+	   
 		if(fundamentalssetvouchercard2.getIsDefault().equals("Y") && fundamentalssetvouchercard.getIsDefault().equals("Y"))  return false;
 		i=fundamentalssetvouchercard2.getCardGroupSetId();
 			fundamentalssetvouchercard.setCardGroupSetId(i);
 			fundamentalssetvouchercard.setModifiedOn(date);
+		
 			fundamentalsRepo.save(fundamentalssetvouchercard);
 			return true;
 		}
@@ -149,12 +177,11 @@ return false;
 
 
 public List<viewvouchercardgroup> viewVersionGroup(String serialType, 
-		String subService, String cardGroupSetName,
-		String moduleCode, String networkCode) {
+		String subService, String cardGroupSetName ,String moduleCode, String networkCode) {
 
 
 	List<Fundamentalssetvouchercard> view = fundamentalsRepo.findByServiceTypeAndSubServiceAndCardGroupSetNameAndModuleCodeAndNetworkCode
-			(serialType,subService,cardGroupSetName,moduleCode,networkCode);
+			(serialType,subService,cardGroupSetName, moduleCode, networkCode);
 	
 	
 	
@@ -165,13 +192,22 @@ public List<viewvouchercardgroup> viewVersionGroup(String serialType,
 		String ver=view.get(i).getLastVersion();
 		viewvouchercardgroup v=new viewvouchercardgroup(id,ver);
 		viewneed.add(v);
+		
+		System.out.print(id);
+		
+		System.out.print(ver);
 	}
 	
-	
+	System.out.print(viewneed);
 	
 	return viewneed;
 	
 }
+
+
+
+
+
 public Optional<CardGroupDetails> viewrequired(String serviceType, String subService,String cardGroupSetName,String moduleCode,String networkCode,String lastVersion){
 	
 	Fundamentalssetvouchercard view=fundamentalsRepo.findByServiceTypeAndSubServiceAndCardGroupSetNameAndModuleCodeAndNetworkCodeAndLastVersion(serviceType,subService,cardGroupSetName,moduleCode,networkCode,lastVersion);
@@ -182,6 +218,25 @@ System.out.println(id);
 	return	repocardgroupdetails.findById(id);	
 }
 
+@Override
+public List<ServiceTypeTable> getSubServiceall() {
+	
+	
+	 return fundamentalscountries.findAll();
+}
 
+public List<States> getstates(String id){
+	
+	return fundamentalstates.findByCountryId(id);
+}
+
+public ServiceTypeTable getbyid(int id)
+{
+	return fundamentalscountries.findById(id).get();
+}
+/*public List<States> getstates() {
+	// TODO Auto-generated method stub
+	return null;
+}*/
 	
 }

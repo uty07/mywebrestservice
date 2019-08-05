@@ -16,10 +16,10 @@ public interface FundamentalsRepo extends JpaRepository<Fundamentalssetvoucherca
 	
 	Fundamentalssetvouchercard findByCardGroupSetName(String cardGroupSetName);
 	Fundamentalssetvouchercard findByCardGroupSetId(int cardGroupSetName);
-	Fundamentalssetvouchercard findByServiceTypeAndSubServiceAndCardGroupSetNameAndModuleCodeAndNetworkCodeAndLastVersion(String serialType, String subService,String cardGroupSetName,String moduleCode,String networkCode,String lastVersion);
+	Fundamentalssetvouchercard findByServiceTypeAndSubServiceAndCardGroupSetNameAndModuleCodeAndNetworkCodeAndLastVersion(String serialType, String subService,String cardGroupSetName, String moduleCode, String networkCode, String lastVersion);
 	  
 	Fundamentalssetvouchercard findByStatus(String status);
 
-	List<Fundamentalssetvouchercard> findByServiceTypeAndSubServiceAndCardGroupSetNameAndModuleCodeAndNetworkCode(String serialType, String subService,String cardGroupSetName,String moduleCode,String networkCode); 
+	List<Fundamentalssetvouchercard> findByServiceTypeAndSubServiceAndCardGroupSetNameAndModuleCodeAndNetworkCode(String serialType, String subService,String cardGroupSetName, String moduleCode, String networkCode); 
 	
 }

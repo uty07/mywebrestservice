@@ -21,6 +21,7 @@ public class Fundamentalssetvouchercard {
 	
 @Column(name = "CARD_GROUP_SET_ID", nullable = false, length = 11)
 @Id
+@GeneratedValue(strategy= GenerationType.AUTO)
 int	cardGroupSetId;
 
 @Column(name = "card_group_set_name", nullable = false,length = 50)
